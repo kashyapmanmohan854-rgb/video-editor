@@ -3,8 +3,10 @@ from moviepy.editor import VideoFileClip, vfx
 import tempfile
 import os
 
-st.title("🎬 Smart Fully-Automated Video Editor")
-st.write("Aap sirf video dijiye — color enhance aur rotation control ke sath video taiyar hai!")
+st.set_page_config(page_title="Pro Automated Video Editor", page_icon="🎬", layout="centered")
+
+st.title("🎬 Pro Automated Video Studio")
+st.write("Ekdum powerful aur high-quality processing — automatic filters aur rotation ke sath!")
 
 uploaded_file = st.file_uploader("Apni video upload karein", type=["mp4", "mov", "avi"])
 
@@ -17,17 +19,20 @@ if uploaded_file is not None:
     st.success("Video successfully load ho gayi hai!")
     st.video(tfile.name)
     
-    st.write("### 🤖 Smart Auto-Editing & Rotation Options")
+    st.write("### 🔥 Professional Enhancement Options")
     
-    auto_color = st.checkbox("✨ Auto-Enhance Colors (Brightness & Contrast)", value=True)
-    rotate_angle = st.selectbox("🔄 Fix Rotation (Agar video tedhi ho):", [0, 90, 180, 270], index=0)
+    enhance_quality = st.checkbox("💎 Heavy Color & Sharpness Boost (Pro Look)", value=True)
+    brighten = st.slider("☀️ Brightness Adjustment:", 0.8, 1.5, 1.1)
+    contrast_val = st.slider("🎨 Contrast Boost:", 0.8, 1.5, 1.2)
+    
+    rotate_angle = st.selectbox("🔄 Fix Orientation / Rotation:", [0, 90, 180, 270], index=0)
     
     duration = int(video.duration)
     start_time, end_time = st.slider("Trim video duration (seconds):", 0, duration, (0, duration))
     speed_factor = st.selectbox("Overall Speed:", [1.0, 1.25, 1.5, 2.0, 0.5], index=0)
     
-    if st.button("🚀 Process Automated Video"):
-        with st.spinner("Smart processing aur rotation fix ho rahi hai..."):
+    if st.button("🚀 Process Pro Quality Video"):
+        with st.spinner("Pro-level rendering aur quality enhancement chal rahi hai... Kripya intezaar karein!"):
             try:
                 processed_video = video.subclip(start_time, end_time)
                 
@@ -36,22 +41,30 @@ if uploaded_file is not None:
                 
                 if speed_factor != 1.0:
                     processed_video = processed_video.speedx(speed_factor)
-                    
-                if auto_color:
-                    processed_video = processed_video.fx(vfx.colorx, 1.2)
+                
+                if enhance_quality:
+                    processed_video = processed_video.fx(vfx.colorx, contrast_val)
+                    processed_video = processed_video.fx(vfx.lum_contrast, lum=0.1, contrast=contrast_val, g=brighten)
 
                 output_path = tempfile.NamedTemporaryFile(delete=False, suffix='.mp4').name
-                processed_video.write_videofile(output_path, codec='libx264', audio_codec='aac', fps=24)
+                processed_video.write_videofile(
+                    output_path, 
+                    codec='libx264', 
+                    audio_codec='aac', 
+                    fps=30, 
+                    preset='medium',
+                    bitrate='5000k'
+                )
                 
-                st.success("Aapki video bilkul sahi hokar taiyar hai!")
+                st.success("🔥 Aapki Pro Quality Video taiyar hai!")
                 st.video(output_path)
                 
                 with open(output_path, "rb") as file:
                     st.download_button(
-                        label="📥 Download Smart Edited Video",
+                        label="📥 Download Pro Edited Video",
                         data=file,
-                        file_name="smart_edited_video.mp4",
+                        file_name="pro_enhanced_video.mp4",
                         mime="video/mp4"
                     )
             except Exception as e:
-                st.error(f"Processing ke dauran error aaya: {e}")
+                st.error(f"Processing error: {e}")
