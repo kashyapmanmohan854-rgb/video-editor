@@ -6,7 +6,7 @@ import os
 st.set_page_config(page_title="Pro Automated Video Editor", page_icon="🎬", layout="centered")
 
 st.title("🎬 Pro Automated Video Studio")
-st.write("Ekdum powerful aur high-quality processing — automatic filters aur rotation ke sath!")
+st.write("100% Free & Powerful Video Editor — Heavy Color Grading & High Quality Export!")
 
 uploaded_file = st.file_uploader("Apni video upload karein", type=["mp4", "mov", "avi"])
 
@@ -21,9 +21,9 @@ if uploaded_file is not None:
     
     st.write("### 🔥 Professional Enhancement Options")
     
-    enhance_quality = st.checkbox("💎 Heavy Color & Sharpness Boost (Pro Look)", value=True)
-    brighten = st.slider("☀️ Brightness Adjustment:", 0.8, 1.5, 1.1)
-    contrast_val = st.slider("🎨 Contrast Boost:", 0.8, 1.5, 1.2)
+    enhance_quality = st.checkbox("💎 Heavy Color & Contrast Boost (Pro Look)", value=True)
+    brighten_val = st.slider("☀️ Brightness / Luminosity:", -50.0, 50.0, 15.0)
+    contrast_val = st.slider("🎨 Contrast Multiplier:", 0.5, 2.0, 1.3)
     
     rotate_angle = st.selectbox("🔄 Fix Orientation / Rotation:", [0, 90, 180, 270], index=0)
     
@@ -32,7 +32,7 @@ if uploaded_file is not None:
     speed_factor = st.selectbox("Overall Speed:", [1.0, 1.25, 1.5, 2.0, 0.5], index=0)
     
     if st.button("🚀 Process Pro Quality Video"):
-        with st.spinner("Pro-level rendering aur quality enhancement chal rahi hai... Kripya intezaar karein!"):
+        with st.spinner("Pro-level rendering aur heavy color grading chal rahi hai... Kripya thoda intezaar karein!"):
             try:
                 processed_video = video.subclip(start_time, end_time)
                 
@@ -43,8 +43,7 @@ if uploaded_file is not None:
                     processed_video = processed_video.speedx(speed_factor)
                 
                 if enhance_quality:
-                    processed_video = processed_video.fx(vfx.colorx, contrast_val)
-                    processed_video = processed_video.fx(vfx.lum_contrast, lum=0.1, contrast=contrast_val, g=brighten)
+                    processed_video = processed_video.fx(vfx.lum_contrast, lum=brighten_val, contrast=contrast_val)
 
                 output_path = tempfile.NamedTemporaryFile(delete=False, suffix='.mp4').name
                 processed_video.write_videofile(
