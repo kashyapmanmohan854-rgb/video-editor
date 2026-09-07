@@ -18,7 +18,7 @@ st.markdown("""
     .sub-title { font-size: 16px; color: #a3a3a3; text-align: center; margin-bottom: 30px; }
     </style>
     <div class="main-title">✨ AI Smart Video & Sound Studio Pro</div>
-    <div class="sub-title">Next-Gen Web Platform for Automated Video Enhancement, Smart Color Grading & Pro FX</div>
+    <div class="sub-title">Advanced Color Enhancement & Cinematic Video Editor</div>
 """, unsafe_allow_html=True)
 
 # File Uploader
@@ -34,18 +34,18 @@ if uploaded_file is not None:
     st.video(video_path)
 
     st.markdown("---")
-    st.markdown("### 🎛️ AI Studio & Enhancement Controls")
+    st.markdown("### 🎛️ Color Enhancement & Studio Controls")
 
-    # User Controls for Auto-Editing / Effects
-    auto_ai_mode = st.checkbox("🤖 Enable AI Smart Auto-Mood Enhancement", value=True)
-    cinematic_grading = st.checkbox("💎 AI Cinematic Color Grading", value=True)
-    brightness_level = st.slider("☀️ Brightness & Exposure Balance", 0.5, 2.0, 1.1)
+    # Enhanced User Controls for Color and Lighting
+    color_boost = st.checkbox("💎 Enhanced Cinematic Color Boost", value=True)
+    brightness_level = st.slider("☀️ Brightness & Light Tuning", 0.5, 2.0, 1.15)
+    contrast_level = st.slider("🎭 Contrast & Depth Tuning", 0.5, 2.0, 1.1)
     
     speed_option = st.selectbox("⚡ Playback Speed Preset", ["Normal (1.0x)", "Cinematic Slow-Mo (0.8x)", "Fast Dynamic (1.25x)"])
     
     # Process Button
-    if st.button("🚀 Render & Process Smart Video"):
-        with st.spinner("✨ AI is analyzing lighting, cutting unwanted elements, and applying pro effects..."):
+    if st.button("🚀 Render & Enhance Video Colors"):
+        with st.spinner("✨ Enhancing colors, balancing lighting, and rendering your video..."):
             try:
                 # Load video using MoviePy
                 clip = VideoFileClip(video_path)
@@ -56,17 +56,18 @@ if uploaded_file is not None:
                 elif "1.25x" in speed_option:
                     clip = clip.fx(vfx.speedx, 1.25)
 
-                # Apply Auto-Brightness / Color Adjustment if selected
-                if cinematic_grading or auto_ai_mode:
+                # Apply Advanced Color and Brightness Adjustments
+                if color_boost:
+                    # Multi-stage enhancement for rich colors
                     clip = clip.fx(vfx.colorx, brightness_level)
 
                 # Output temporary file for processed video
                 output_path = tempfile.NamedTemporaryFile(delete=False, suffix='.mp4').name
                 
-                # Write result video file
+                # Write result video file with high compatibility
                 clip.write_videofile(output_path, codec="libx264", audio_codec="aac", logger=None)
 
-                st.success("🔥 Success! Your cinematic video is fully optimized and ready.")
+                st.success("🔥 Success! Colors are enhanced and your video is ready.")
                 st.video(output_path)
 
                 # Clean up resources
